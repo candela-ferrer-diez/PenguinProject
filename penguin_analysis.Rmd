@@ -1,0 +1,135 @@
+---
+title: "penguin_analysis"
+author: "Candela Ferrer"
+date: "2024-10-16"
+output: html_document
+---
+
+## Library loading
+  When you click the **Knit** button a document will be generated that includes   both content as well as the output of any embedded R code chunks within the     document
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+library(palmerpenguins)
+library(janitor)
+library(here)
+
+```
+
+## Penguin data 
+  here() is a very robust,reproducible and data-safe version of accessing wd. 
+```{r penguins_data, echo=FALSE}
+# To write data to csv
+write.csv(penguins_raw, here("data", "penguins_raw.csv"))
+
+#Load data 
+penguins_raw <- read.csv(here("data","penguins_raw.csv"))
+
+# Looking at data
+head(penguins_raw) #first 6 rows
+colnames(penguins_raw) # show col names
+
+```
+
+
+# Tidying-up data - common functions
+
+```{r tidying_data, echo=FALSE}
+
+# Removing columns
+
+#penguins_noComments <- select(penguins_raw, -Comments) # removes comments column
+#penguins_onlyComments <- select(penguins_raw, Comments) # removes everything but comments
+#penguins_onlyComments <- select(penguins_raw, -starts_with("Delta")) # removes everything but comments
+
+```
+
+The problem with this is that it clogs up our environment with loads of different objects 
+
+Instead, we can use the piping function...
+
+#Piping 
+%>% is the piping function. 
+It means "and then"
+
+```{r piping, echo=FALSE}
+# Removing columns with pipe function: 
+penguins_clean <- penguins_raw %>%
+  select(-Comments) %>%
+  select(-starts_with("delta")) 
+
+```
+
+# Clean names 
+This unifies all the column names 
+types of computer-readable names: 
+  camelCase
+  snake_case
+  PascalCase
+  
+```{r tidy_col_names}
+# Cleaning column names:
+penguins_clean <- penguins_raw %>%
+  select(-Comments) %>%
+  select(-starts_with("delta")) %>%
+  clean_names() #unifies col names
+
+# Save clean data - CODE
+write.csv(penguins_clean, here("data", "penguins_clean.csv"))
+```
+
+#Functions 
+We can make functions in R
+
+```{r Clean_data_function, echo=FALSE}
+# Making a function to clean data
+
+cleaning_penguin_columns <- function(raw_data){ # making new function
+  raw_data %>% # generic - any raw data goes here
+    clean_names() %>% 
+    select(-comments) %>% 
+    select(-starts_with("delta"))
+}
+
+penguins_clean <-cleaning_penguin_columns(penguins_raw)
+
+colnames(penguins_clean)
+
+```
+
+# Using functions from function source 
+It is always advisable to store functions in a separate file and then loading them into your script. 
+This ensures that the functions do not get damaged 
+```{r }
+# Using our functions from the functions script
+
+#creating a file 
+#file.create(here("functions", "cleaning.R")) 
+#sourcing file
+source(here("functions", "cleaning.R"), echo = TRUE)
+
+```
+
+#Installing libraries in a reproducible way 
+This keeps track of the packages being used in the session by creating a 'Project Library' separate from the System Library 
+```{r renv, echo=FALSE}
+#Install renv 
+install.packages("renv")
+
+renv::init()  # initializing renv
+renv::snapshot()# Create a snapshot of the libraries in use => in rev.lock file 
+renv::diagnostics() # run diagnostics
+renv::restore() # Restore the snapshot to install the libraries
+
+```
+
+#Making new script 
+
+```{r create_file, echo=FALSE}
+# Creating new file
+# file.create(here("functions", "cleaning.R"))
+
+```
+
+

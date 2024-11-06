@@ -1,0 +1,6 @@
+"0","#read csv"
+"0","##Load data "
+"0","penguins_clean <- read.csv(here(""data"",""penguins_clean.csv""))"
+"0",""
+"0","# Looking at data"
+"0","head(penguins_clean) #first 6 rows"

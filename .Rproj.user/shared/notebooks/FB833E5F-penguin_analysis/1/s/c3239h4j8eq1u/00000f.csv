@@ -1,0 +1,8 @@
+"0","# To write data to csv"
+"0","write.csv(penguins_raw, here(""data"", ""penguins_raw.csv""))"
+"0",""
+"0","#Load data "
+"0","penguins_raw <- read.csv(here(""data"",""penguins_raw.csv""))"
+"0",""
+"0","# Looking at data"
+"0","head(penguins_raw) #first 6 rows"

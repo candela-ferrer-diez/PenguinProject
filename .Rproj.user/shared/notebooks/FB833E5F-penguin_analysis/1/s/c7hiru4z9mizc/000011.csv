@@ -1,0 +1,67 @@
+"0","# Using our functions from the functions script"
+"0",""
+"0","#creating a file "
+"0","#file.create(here(""functions"", ""cleaning.R"")) "
+"0","#sourcing file"
+"0","source(here(""functions"", ""cleaning.R""), echo = TRUE)"
+"1","
+"
+"1",""
+"1","> ## ---------------------------
+> ##
+> ## Script name: Cleaning.r
+> ##
+> ## Purpose of script: 
+> ##      # A file of functions for cleaning the Palm"
+"1",""
+"1"," .... [TRUNCATED] "
+"1",""
+"1","
+"
+"1","
+"
+"1",""
+"1","> # A function to remove columns based on a vector of column names
+> remove_columns <- function(penguins_data, column_names) {
++   penguins_data %>%
++"
+"1",""
+"1"," .... [TRUNCATED] "
+"1",""
+"1","
+"
+"1","
+"
+"1",""
+"1","> # A function to make sure the species names are shortened
+> shorten_species <- function(penguins_data) {
++   penguins_data %>%
++     mutate(species "
+"1",""
+"1"," .... [TRUNCATED] "
+"1",""
+"1","
+"
+"1","
+"
+"1",""
+"1","> # A function to remove any empty columns or rows
+> remove_empty_columns_rows <- function(penguins_data) {
++   penguins_data %>%
++     remove_empty(c"
+"1",""
+"1"," .... [TRUNCATED] "
+"1",""
+"1","
+"
+"1","
+"
+"1",""
+"1","> # A function to remove rows which contain NA values
+> remove_NA <- function(penguins_data) {
++   penguins_data %>%
++     na.omit()
++ }"
+"1",""
+"1","
+"

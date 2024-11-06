@@ -1,0 +1,7 @@
+"0",""
+"0","# Removing columns"
+"0",""
+"0","#penguins_noComments <- select(penguins_raw, -Comments) # removes comments column"
+"0","#penguins_onlyComments <- select(penguins_raw, Comments) # removes everything but comments"
+"0","#penguins_onlyComments <- select(penguins_raw, -starts_with(""Delta"")) # removes everything but comments"
+"0",""

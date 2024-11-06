@@ -1,0 +1,157 @@
+---
+title: "Reproducible Figures"
+author: "Candela Ferrer"
+format: html
+editor: visual
+---
+
+## Quarto
+
+Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+
+##Packages
+```{r}
+library(tidyverse)
+library(palmerpenguins)
+library(janitor)
+library(here)
+```
+
+##Boxplot 
+This is an exploratory figure 
+This is for looking at our raw data 
+This is also improtnat dfor communicating 
+Types: boxplot, stacked hsitorgrams -> 
+    scatterplot  (2 continuous variabels )
+        but remebr for it to be exploratory it can't have a line through it 
+
+
+```{r tidy_col_names}
+#read csv
+##Load data 
+penguins_clean <- read.csv(here("data","penguins_clean.csv"))
+
+# Looking at data
+head(penguins_clean) #first 6 rows
+colnames(penguins_clean) # show col names
+
+shorten_species <- function(penguins_clean) {
+  penguins_clean %>%
+    mutate(species = case_when(
+      species == "Adelie Penguin (Pygoscelis adeliae)" ~ "Adelie",
+      species == "Chinstrap penguin (Pygoscelis antarctica)" ~ "Chinstrap",
+      species == "Gentoo penguin (Pygoscelis papua)" ~ "Gentoo"
+    ))
+}
+
+```
+
+```{r, making_boxplot}
+flipper_boxplot <- ggplot(
+  data = penguins_clean, # this tells you what data to use
+  aes(x = species, 
+      y = flipper_length_mm)) +
+  geom_boxplot() # this actually makes the boxplot
+flipper_boxplot
+
+```
+H. Warning: [38;5;232mRemoved 2 rows containing non-finite outside the scale range (`stat_boxplot()`).[39m]
+
+this suggests that we need to remove NA values 
+    but only do it for the specific column that you are working on - the others are another problme and removing these does not make any difference to us now 
+    
+```{r, removing_NAs}
+penguins_flippers <- penguins_clean %>%
+  select(species, flipper_length_mm)  %>% #Subset the columns
+  drop_na() #remove nas in specific column 
+
+colnames(penguins_flippers) # to check changes
+```
+
+
+```{r, removing_NAs}
+#try boxplot again
+flipper_boxplot_2 <- ggplot(
+  data = penguins_flippers, # this tells you what data to use
+  aes(x = species, 
+      y = flipper_length_mm)) +
+  geom_boxplot(aes(color = species),# species by colour
+               width = 0.3, #size of boxplot
+               show.legend = FALSE) + # no legend 
+  geom_jitter(aes(color = species),
+              alpha = 0.3, #transparency
+              show.legend = FALSE,
+              position = position_jitter(
+                width = 0.2,
+                seed = 0)) +
+  labs(x= "Species",
+                     y = "Flipper Length (mm)")
+
+flipper_boxplot_2
+```
+    there is nothign random about a computer 
+        giving it a random seed 
+        giving it a number 
+        thus randomness will happen in the smae way everytime
+        
+Changing the names
+
+```{r}
+#Changing 
+shorten_species <- function(penguins_data) {
+  penguins_data %>%
+    mutate(species = case_when(
+      species == "Adelie Penguin (Pygoscelis adeliae)" ~ "Adelie",
+      species == "Chinstrap penguin (Pygoscelis antarctica)" ~ "Chinstrap",
+      species == "Gentoo penguin (Pygoscelis papua)" ~ "Gentoo"
+    ))
+}
+
+species_colour <- c("Adelie" = "darkorange",
+                    "Chinstrap" = "purple",
+                    "Gentoo" = "cyan")
+```
+
+
+```{r}
+flipper_boxplot_2 <- ggplot(
+  data = penguins_flippers, # this tells you what data to use
+  aes(x = species, 
+      y = flipper_length_mm)) +
+  geom_boxplot(aes(color = species),# species by colour
+               width = 0.3, #size of boxplot
+               show.legend = FALSE) + # no legend 
+  geom_jitter(aes(color = species),
+              alpha = 0.3, #transparency
+              show.legend = FALSE,
+              position = position_jitter(
+                width = 0.2,
+                seed = 0)) +
+  scale_color_manual(values = species_colour) +
+  labs(x= "Species",
+                     y = "Flipper Length (mm)")
+
+flipper_boxplot_2
+```
+could add a plotting file so that the fucntionsa re seprate from the script 
+    makinga  fucntion makes it much more fucntional and flexible for others 
+    
+    overwritign within a fucntion is ok!
+    {{}} => inpout is part of column 
+    
+
+Saving plots 
+keep them in a file called 
+
+scaling!! => changes the font and evrythign in one go!
+    remeber if you chaneg the size, you will also have to change the scales!!
+resolution = how many pixels per cm 
+    at least 300 
+    
+Vectors rather than PNGs!
+    png -> like colour by number (like jpeg)
+    vectors -> .svg or .pdf
+        these save every element of the image as a shape (e.g. line as a line) not within a pixel
+        
+        
+        

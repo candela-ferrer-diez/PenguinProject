@@ -1,0 +1,8 @@
+"0","# Cleaning column names:"
+"0","penguins_clean <- penguins_raw %>%"
+"0","  select(-Comments) %>%"
+"0","  select(-starts_with(""delta"")) %>%"
+"0","  clean_names() #unifies col names"
+"0",""
+"0","# Save clean data - CODE"
+"0","write.csv(penguins_clean, here(""data"", ""penguins_clean.csv""))"

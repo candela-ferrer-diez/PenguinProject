@@ -1,0 +1,5 @@
+"0","# Removing columns with pipe function: "
+"0","penguins_clean <- penguins_raw %>%"
+"0","  select(-Comments) %>%"
+"0","  select(-starts_with(""delta"")) "
+"0",""
